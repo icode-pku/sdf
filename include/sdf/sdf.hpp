@@ -217,7 +217,7 @@ struct SDF {
     const std::vector<int>& adj_faces(int pointid) const;
 
     // Get total surface area of mesh
-    const float surface_area() const;
+    float surface_area() const;
 
     // Get vector of face areas, shape (num_faces)
     const Vector& face_areas() const;

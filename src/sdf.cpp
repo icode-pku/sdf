@@ -346,7 +346,7 @@ const std::vector<int>& SDF::adj_faces(int pointid) const {
     return p_impl->adj_faces[pointid];
 }
 
-const float SDF::surface_area() const { return p_impl->total_area; }
+float SDF::surface_area() const { return p_impl->total_area; }
 
 const Vector& SDF::face_areas() const { return p_impl->face_area; }
 
