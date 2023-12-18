@@ -25,7 +25,7 @@ set( SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src" )
 
 option( SDF_USE_SYSTEM_EIGEN
     "Use system Eigen. If false, please set EIGEN_INCLUDE_DIR manually" ON )
-option( SDF_BUILD_DEMO "Build the demo program, if meshview available" ON )
+option( SDF_BUILD_DEMO "Build the demo program, if meshview available" OFF )
 option( SDF_BUILD_PYTHON "Build the python bindings, if pybind11 available" OFF )
 option( SDF_BUILD_INSTALL "Build the install target" ON )
 
@@ -55,17 +55,17 @@ else()
     include_directories(${EIGEN_INCLUDE_DIR})
 endif()
 
-# Optional sxyu/meshview
-find_package( meshview )
-if (NOT meshview_FOUND)
-    message( WARNING "meshview not found, demo is disabled. Please install from https://github.com/sxyu/meshview if you want to run the demo (totally optional)" )
-endif()
+# # Optional sxyu/meshview
+# find_package( meshview )
+# if (NOT meshview_FOUND)
+#     message( WARNING "meshview not found, demo is disabled. Please install from https://github.com/sxyu/meshview if you want to run the demo (totally optional)" )
+# endif()
 
-# Optional pybind11
-find_package( pybind11 )
-if (NOT pybind11_FOUND)
-    message( WARNING "pybind11 not found, Python binding is disabled. Install from https://github.com/pybind/pybind11" )
-endif()
+# # Optional pybind11
+# find_package( pybind11 )
+# if (NOT pybind11_FOUND)
+#     message( WARNING "pybind11 not found, Python binding is disabled. Install from https://github.com/pybind/pybind11" )
+# endif()
 
 add_library( sdf STATIC ${SDF_SOURCES} )
 
@@ -81,21 +81,21 @@ target_link_libraries( sdf PUBLIC
     ${CMAKE_DL_LIBS}
 )
 
-if (${meshview_FOUND} AND ${SDF_BUILD_DEMO})
-    add_executable(sdf-demo demo.cpp)
-    target_link_libraries( sdf-demo sdf meshview::meshview )
-endif ()
+# if (${meshview_FOUND} AND ${SDF_BUILD_DEMO})
+#     add_executable(sdf-demo demo.cpp)
+#     target_link_libraries( sdf-demo sdf meshview::meshview )
+# endif ()
 
-if (${pybind11_FOUND} AND ${SDF_BUILD_PYTHON})
-    pybind11_add_module(pysdf SHARED ${SDF_SOURCES} pybind.cpp)
-    set_target_properties(pysdf PROPERTIES OUTPUT_NAME pysdf)
-    target_include_directories(
-        pysdf PUBLIC
-        $<BUILD_INTERFACE:${INCLUDE_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-    target_link_libraries(pysdf PRIVATE ${DEPENDENCIES})
-endif ()
+# if (${pybind11_FOUND} AND ${SDF_BUILD_PYTHON})
+#     pybind11_add_module(pysdf SHARED ${SDF_SOURCES} pybind.cpp)
+#     set_target_properties(pysdf PROPERTIES OUTPUT_NAME pysdf)
+#     target_include_directories(
+#         pysdf PUBLIC
+#         $<BUILD_INTERFACE:${INCLUDE_DIR}>
+#         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+#     )
+#     target_link_libraries(pysdf PRIVATE ${DEPENDENCIES})
+# endif ()
 
 if (SDF_BUILD_INSTALL)
     set_target_properties( sdf PROPERTIES
